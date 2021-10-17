@@ -1,0 +1,14 @@
+{
+  "name": "georg/productcatalog",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "require": {
+    "twig/twig": "^3.0",
+    "bramus/router": "1.6",
+    "ramsey/uuid": "^4.2",
+    "nesbot/carbon": "^2.53"
+  }
+}
