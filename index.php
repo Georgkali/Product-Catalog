@@ -47,6 +47,9 @@ $router->get('/{id}', function ($id = '{id}') use ($twig, $productsController) {
 $router->post('/delete', 'ProductsController@delete');
 $router->post('/edit', 'ProductsController@edit');
 
+$router->post('/searchByCategory', function () use ($twig, $productsController) {
+    echo $twig->render('user.html.twig', ['products' => $productsController->searchByCategory()->getProducts()]);
+});
 
 
 $router->post('/logout', 'MainController@logout');

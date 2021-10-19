@@ -6,9 +6,11 @@ use App\Models\Product;
 use App\Models\ProductsCollection;
 use Carbon\Carbon;
 use PDO;
-
+use App\Repositories\UsersRepository;
 class ProductsRepository extends MysqlRepository
 {
+
+
     public function addProduct(Product $product)
     {
         $sql = "INSERT INTO products(id, product_name, qty, user_id, category, add_date, last_edit_date) VALUES (?,?,?,?,?,?,?)";
@@ -57,6 +59,17 @@ class ProductsRepository extends MysqlRepository
                                     qty = '{$_POST['newQty']}',
                                     last_edit_date = '$now' WHERE id='$id'";
         $this->pdo->exec($sql);
+    }
+    public function searchByCategory(string $category): ProductsCollection {
+        $id = (new UsersRepository())->getUserId($_SESSION['name']);
+        $products = $this->getProductsById($id)->getProducts();
+        $collection = new ProductsCollection();
+        foreach ($products as $product) {
+            if($product->getCategory() == $category) {
+                $collection->insertProduct($product);
+            }
+        }
+        return $collection;
     }
 
 }

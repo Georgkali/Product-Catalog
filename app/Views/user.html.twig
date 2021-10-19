@@ -7,13 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Product Catalog v1.0</title>
 
-    <form method="post" action="/logout">
-        <button type="submit">Logout</button>
-    </form>
-
 
 </head>
 <body>
+
+<form method="post" action="/logout">
+    <button type="submit">Logout</button>
+</form>
+<br>
+
 <form method="post" action="/addProduct">
 
     <label for="name">Product name</label>
@@ -28,12 +30,42 @@
         <option value="d">d</option>
     </select>
     <button type="submit">Add product</button>
-    <ol>
-        {% for product in products %}
-            <li><a href="{{ product.id }}">{{ product.productname }}</a> {{ product.category }}</li>
-        {% endfor %}
-    </ol>
+</form>
+<br>
+<table style="border-width: 1px; border-color: black; border-style: solid">
+    <tr>
+        <th>Product name</th>
+        <th>Product category</th>
+        <th>Product quantity</th>
+        <th>Product creation date</th>
+        <th>Product last edit date</th>
+    </tr>
+    {% for product in products %}
+        <tr>
+            <th><a href="{{ product.getId }}">{{ product.productname }}</a></th>
+            <th> {{ product.category }}</th>
+            <th> {{ product.qty }}</th>
+            <th>{{ product.adddate }}</th>
+            <th>{{ product.lasteditdate }}</th>
+        </tr>
+    {% endfor %}
+    <tr>
+        <th>Search by category</th>
+        <form method="post" action="/searchByCategory">
+            <th><select name="category" required>
+                    <option value="a">a</option>
+                    <option value="b">b</option>
+                    <option value="c">c</option>
+                    <option value="d">d</option>
+                </select></th>
+            <th>
+                <button type="submit">Search</button>
+            </th>
+        </form>
 
+        <th></th>
+    </tr>
+</table>
 
 
 </form>

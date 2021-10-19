@@ -61,12 +61,19 @@ class ProductsController
     public function delete(): void
     {
         $this->productsRepository->delete($_POST['id']);
+        header("location: /main");
     }
 
     public function edit(): void
     {
         $this->productsRepository->edit($_POST['id']);
-        header("location: /{$_POST['id']}");
+        header("location: /main");
+    }
+
+    public function searchByCategory(): ProductsCollection
+    {
+
+        return $this->productsRepository->searchByCategory($_POST['category']);
     }
 
 }
