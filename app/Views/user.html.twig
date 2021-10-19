@@ -12,7 +12,6 @@
     </form>
 
 
-
 </head>
 <body>
 <form method="post" action="/addProduct">
@@ -29,13 +28,13 @@
         <option value="d">d</option>
     </select>
     <button type="submit">Add product</button>
-<ul>
-    <?php
-    foreach ($products->getProducts() as $key => $product) {
-       echo "<li> {$product->getProductName()} {$product->getQty()} {$product->getCategory()} {$product->getAddDate()} </li>";
-    }
-    ?>
-</ul>
+    <ol>
+        {% for product in products %}
+            <li><a href="{{ product.id }}">{{ product.productname }}</a> {{ product.category }}</li>
+        {% endfor %}
+    </ol>
+
+
 
 </form>
 

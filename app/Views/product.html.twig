@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<table style="border-width: 1px; border-color: black; border-style: solid">
+    <tr>
+        <th>Product name</th>
+        <th>Product category</th>
+        <th>Product quantity</th>
+        <th>Product creation date</th>
+    </tr>
+    {% for product in products.getproducts %}
+    <tr>
+        <th>{{ product.productname }}</th>
+        <th> {{ product.category }}</th>
+        <th> {{ product.qty }}</th>
+        <th>{{ product.adddate }}</th>
+    </tr>
+    <form method="post" action="/edit">
+        <tr>
+
+            <th><input type="text" value="{{ product.productName }}" required name="newProductName"></th>
+            <th><select name="newCategory" required>
+                    <option selected="selected">{{ product.category }}</option>
+                    <option value="a">a</option>
+                    <option value="b">b</option>
+                    <option value="c">c</option>
+                    <option value="d">d</option>
+                </select></th>
+            <th><input type="number" name="newQty" required value="{{ product.qty }}"></th>
+            <th>
+                <button type="submit" name="id" value="{{ product.getId }}">Edit Product</button>
+            </th>
+
+
+        </tr>
+
+    </form>
+</table>
+<br><br>
+
+
+<form method="post" action="/delete">
+
+    <button type="submit" name="id" value="{{ product.getId }}">Delete Product</button>
+</form>
+{% endfor %}
+</body>
+</html>

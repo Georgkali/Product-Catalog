@@ -9,10 +9,6 @@ class ValidationRepository
     {
         $row = new UsersRepository();
         $values = $row->getRow(['name', 'email']);
-        echo "<pre>";
-        var_dump($values);
-        echo "</pre>";
-
         if (in_array($newUserName, $values[0]) || in_array($newUserEmail, $values[1])) {
             return false;
         } else {
@@ -24,7 +20,6 @@ class ValidationRepository
     {
         $row = new UsersRepository();
         $values = $row->getRow(['name', 'password']);
-
         if (in_array($userName, $values[0]) && password_verify($password, $values[1][array_search($userName, $values[0])])) {
             return true;
         } else {

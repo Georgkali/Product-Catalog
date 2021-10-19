@@ -30,7 +30,6 @@ class UsersRepository extends MysqlRepository
     public function getUserId(string $name): string
     {
         $users = $this->getRow(['name', 'id']);
-
         return $users[1][array_search($name, $users[0])];
     }
 }
