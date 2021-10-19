@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\Product;
 use App\Models\ProductCategories;
 use App\Models\ProductsCollection;
+use App\Models\Tag;
+use App\Models\TagsCollection;
 use App\Repositories\ProductsRepository;
 use App\Repositories\UsersRepository;
 use Carbon\Carbon;
@@ -29,20 +31,28 @@ class ProductsController
 
     public function addProduct()
     {
-        if (in_array($_POST['category'], (new ProductCategories())->getCategories())) {
+        $id = Uuid::uuid4();
+        if (in_array($_POST['category'], (new ProductCategories())->getCategories()) && !empty($_POST['productName'])) {
             $this->productsRepository->addProduct(
                 new Product(
-                    Uuid::uuid4(),
+                    $id,
                     $_POST['productName'],
                     $_POST['qty'],
                     $this->usersRepository->getUserId($_SESSION['name']),
                     $_POST['category'],
                     Carbon::now(),
-                )
-            );
-            header('location: /main');
+                ));
+
+            foreach ($_POST['tags'] as $tag) {
+                if (isset($tag)) {
+                    $this->productsRepository->addTag($id, new Tag($tag));
+                }
+            }
+
+           // header('location: /main');
         } else {
-            var_dump('invalid category');
+            echo 'invalid category';
+            header('location: /main');
         }
     }
 

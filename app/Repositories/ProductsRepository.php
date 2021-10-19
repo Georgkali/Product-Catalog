@@ -4,12 +4,20 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Models\ProductsCollection;
+use App\Models\Tag;
 use Carbon\Carbon;
 use PDO;
-use App\Repositories\UsersRepository;
+
 class ProductsRepository extends MysqlRepository
 {
 
+    public function addTag(string $product_id, Tag $tag)
+    {
+        $sql = "INSERT INTO productidtagid(product_id, tag_id) VALUES (?,?)";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([$product_id, $tag->getName()]);
+
+    }
 
     public function addProduct(Product $product)
     {
@@ -60,12 +68,14 @@ class ProductsRepository extends MysqlRepository
                                     last_edit_date = '$now' WHERE id='$id'";
         $this->pdo->exec($sql);
     }
-    public function searchByCategory(string $category): ProductsCollection {
+
+    public function searchByCategory(string $category): ProductsCollection
+    {
         $id = (new UsersRepository())->getUserId($_SESSION['name']);
         $products = $this->getProductsById($id)->getProducts();
         $collection = new ProductsCollection();
         foreach ($products as $product) {
-            if($product->getCategory() == $category) {
+            if ($product->getCategory() == $category) {
                 $collection->insertProduct($product);
             }
         }
