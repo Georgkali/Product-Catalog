@@ -13,13 +13,16 @@
         <th>Product name</th>
         <th>Product category</th>
         <th>Product quantity</th>
+        <th>Tags</th>
         <th>Product creation date</th>
+
     </tr>
     {% for product in products.getproducts %}
     <tr>
         <th>{{ product.productname }}</th>
         <th> {{ product.category }}</th>
         <th> {{ product.qty }}</th>
+        <th> </th>
         <th>{{ product.adddate }}</th>
     </tr>
     <form method="post" action="/edit">

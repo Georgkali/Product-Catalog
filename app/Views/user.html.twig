@@ -45,6 +45,7 @@
         <th>Product name</th>
         <th>Product category</th>
         <th>Product quantity</th>
+        <th>Tags</th>
         <th>Product creation date</th>
         <th>Product last edit date</th>
     </tr>
@@ -53,6 +54,17 @@
             <th><a href="{{ product.getId }}">{{ product.productname }}</a></th>
             <th> {{ product.category }}</th>
             <th> {{ product.qty }}</th>
+            <th>
+
+                {% for tag in tags %}
+                    {% if  tag.getProductId == product.getId %}
+                        {{ tag.getTagId }}
+
+                    {% endif %}
+                {% endfor %}
+
+
+            </th>
             <th>{{ product.adddate }}</th>
             <th>{{ product.lasteditdate }}</th>
         </tr>
@@ -77,6 +89,8 @@
 
 
 </form>
+
+
 
 </body>
 </html>

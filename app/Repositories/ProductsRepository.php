@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Product;
 use App\Models\ProductsCollection;
 use App\Models\Tag;
+use App\Models\TagsCollection;
 use Carbon\Carbon;
 use PDO;
 
@@ -15,7 +16,7 @@ class ProductsRepository extends MysqlRepository
     {
         $sql = "INSERT INTO productidtagid(product_id, tag_id) VALUES (?,?)";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute([$product_id, $tag->getName()]);
+        $statement->execute([$product_id, $tag->getTagid()]);
 
     }
 
@@ -78,6 +79,24 @@ class ProductsRepository extends MysqlRepository
             if ($product->getCategory() == $category) {
                 $collection->insertProduct($product);
             }
+        }
+        return $collection;
+    }
+
+    public function getTags(): TagsCollection
+    {
+        $sql = "SELECT * FROM productidtagid";
+        $db = $this->pdo->query($sql);
+        $db->execute();
+        $tags = $db->fetchAll(PDO::FETCH_ASSOC);
+        $collection = new TagsCollection();
+        foreach ($tags as $tag) {
+            $collection->insertTag(
+                new Tag(
+                    $tag['tag_id'],
+                    $tag['product_id']
+                )
+            );
         }
         return $collection;
     }

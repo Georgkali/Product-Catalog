@@ -28,7 +28,8 @@ $router->get('/', function () use ($twig) {
 $router->post('/login', 'MainController@login');
 
 $router->get('/main', function () use ($twig, $productsController) {
-    echo $twig->render('user.html.twig', ['products' => $productsController->get()->getProducts()]);
+    echo $twig->render('user.html.twig', ['products' => $productsController->get()->getProducts(),
+        'tags' => $productsController->getProductTags()->getTags()]);
 });
 
 $router->get('/registration', function () use ($twig) {

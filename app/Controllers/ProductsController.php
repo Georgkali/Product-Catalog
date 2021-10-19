@@ -49,7 +49,7 @@ class ProductsController
                 }
             }
 
-           // header('location: /main');
+           header('location: /main');
         } else {
             echo 'invalid category';
             header('location: /main');
@@ -84,6 +84,11 @@ class ProductsController
     {
 
         return $this->productsRepository->searchByCategory($_POST['category']);
+    }
+    public function getProductTags(): TagsCollection {
+
+          // var_dump($this->productsRepository->getTags()->getTags());
+           return $this->productsRepository->getTags();
     }
 
 }

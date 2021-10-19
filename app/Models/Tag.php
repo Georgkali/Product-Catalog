@@ -3,14 +3,22 @@
 namespace App\Models;
 
 class Tag {
-    private string $name;
-    public function __construct(string $name)
+    private string $tag_id;
+    private ?string $product_id;
+
+    public function __construct(string $tag_id, ?string $product_id = null)
     {
-        $this->name = $name;
+        $this->tag_id = $tag_id;
+        $this->product_id = $product_id;
     }
 
-    public function getName(): string
+    public function getTagId(): string
     {
-        return $this->name;
+        return $this->tag_id;
+    }
+
+    public function getProductId(): string
+    {
+        return $this->product_id;
     }
 }
