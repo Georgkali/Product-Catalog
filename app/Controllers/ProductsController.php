@@ -49,7 +49,7 @@ class ProductsController
                 }
             }
 
-           header('location: /main');
+            header('location: /main');
         } else {
             echo 'invalid category';
             header('location: /main');
@@ -84,13 +84,39 @@ class ProductsController
     {
         return $this->productsRepository->searchByCategory($_POST['category']);
     }
-    public function getProductTags(): TagsCollection {
 
-           return $this->productsRepository->getTags();
+    public function getProductTags(): TagsCollection
+    {
+
+        return $this->productsRepository->getTags();
     }
 
-    public function searchByTags() {
+    public function searchByTags(): ProductsCollection
+    {
+        $tagsArr = $this->productsRepository->getTags()->getTags();
+        $productsWithTags = [];
 
+        foreach ($_POST['tags'] as $tag) {
+            foreach ($tagsArr as $id) {
+                if ($id->getTagId() == $tag) {
+
+                    $productsWithTags[$id->getProductId()][] = $tag;
+                }
+            }
+        }
+        $collection = new ProductsCollection();
+        foreach ($productsWithTags as $key => $product) {
+            if(count($product) == count($_POST)) {
+            }
+        }
+
+
+
+        echo "<pre>";
+        var_dump($productsWithTags);
+        echo "</pre>";
+
+        return new ProductsCollection;
     }
 
 }
