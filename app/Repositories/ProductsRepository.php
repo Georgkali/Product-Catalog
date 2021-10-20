@@ -100,5 +100,8 @@ class ProductsRepository extends MysqlRepository
         }
         return $collection;
     }
+    public function searchByTags() {
+
+    }
 
 }

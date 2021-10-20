@@ -27,7 +27,6 @@
     </tr>
     <form method="post" action="/edit">
         <tr>
-
             <th><input type="text" value="{{ product.productName }}" required name="newProductName"></th>
             <th><select name="newCategory" required>
                     <option selected="selected">{{ product.category }}</option>
@@ -40,8 +39,6 @@
             <th>
                 <button type="submit" name="id" value="{{ product.getId }}">Edit Product</button>
             </th>
-
-
         </tr>
 
     </form>
@@ -50,7 +47,6 @@
 
 
 <form method="post" action="/delete">
-
     <button type="submit" name="id" value="{{ product.getId }}">Delete Product</button>
 </form>
 {% endfor %}

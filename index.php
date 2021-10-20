@@ -52,6 +52,10 @@ $router->post('/searchByCategory', function () use ($twig, $productsController) 
     echo $twig->render('user.html.twig', ['products' => $productsController->searchByCategory()->getProducts()]);
 });
 
+$router->post('/searchByTags', function () use ($twig, $productsController) {
+    echo $twig->render('user.html.twig', ['products' => $productsController->searchByTags()]);
+});
+
 
 $router->post('/logout', 'MainController@logout');
 

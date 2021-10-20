@@ -82,13 +82,15 @@ class ProductsController
 
     public function searchByCategory(): ProductsCollection
     {
-
         return $this->productsRepository->searchByCategory($_POST['category']);
     }
     public function getProductTags(): TagsCollection {
 
-          // var_dump($this->productsRepository->getTags()->getTags());
            return $this->productsRepository->getTags();
+    }
+
+    public function searchByTags() {
+
     }
 
 }

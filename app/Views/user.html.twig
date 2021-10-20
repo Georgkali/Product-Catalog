@@ -85,11 +85,27 @@
 
         <th></th>
     </tr>
-</table>
+    <tr>
+        <th>Search by tags</th>
+        <form method="post" action="/searchByTags">
+            <th>
+            </th>
+            <th>
+                <button type="submit">Search</button>
+            </th>
 
+            <th>
+                <label for="x">X</label>
+                <input type="checkbox" name="tags[]" value="X">
+                <label for="y">Y</label>
+                <input type="checkbox" name="tags[]" value="Y">
+                <label for="z">Z</label>
+                <input type="checkbox" name="tags[]" value="Z">
+            </th>
+        </form>
+    </tr>
 
-</form>
-
+    </table>
 
 
 </body>
