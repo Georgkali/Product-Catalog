@@ -13,7 +13,8 @@ class MysqlRepository
     public function __construct()
     {
         try {
-            $this->pdo = new PDO('mysql:host=127.0.0.1;dbname=product_catalog', 'root', '');
+            $config = require 'config.php';
+            $this->pdo = new PDO("{$config['connection']};dbname=$config[name]", "$config[username]", "$config[password]");
         } catch (PDOException $e) {
             die('Could not connect to database.');
         }
