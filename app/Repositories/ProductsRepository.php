@@ -100,16 +100,6 @@ class ProductsRepository extends MysqlRepository
         }
         return $collection;
     }
-    public function searchByTags() {
-        $productsCollection = new ProductsCollection();
-            $tags = [];
-            foreach ($tags as $tag) {
 
-                if($tag->getProductId() == $productId){
-
-                }
-
-            }
-    }
 
 }

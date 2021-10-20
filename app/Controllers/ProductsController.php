@@ -93,11 +93,11 @@ class ProductsController
 
     public function searchByTags(): ProductsCollection
     {
-        $tagsArr = $this->productsRepository->getTags()->getTags();
+        $allTags = $this->productsRepository->getTags()->getTags();
         $productsWithTags = [];
 
         foreach ($_POST['tags'] as $tag) {
-            foreach ($tagsArr as $id) {
+            foreach ($allTags as $id) {
                 if ($id->getTagId() == $tag) {
 
                     $productsWithTags[$id->getProductId()][] = $tag;
@@ -105,18 +105,18 @@ class ProductsController
             }
         }
         $collection = new ProductsCollection();
-        foreach ($productsWithTags as $key => $product) {
-            if(count($product) == count($_POST)) {
+        foreach ($productsWithTags as $productID => $tags) {
+            if (count($tags) == count($_POST['tags'])) {
+                $products = $this->get()->getProducts();
+                foreach ($products as $product) {
+                    if ($product->getId() == $productID) {
+                        $collection->insertProduct($product);
+                    }
+                }
             }
         }
+        return $collection;
 
-
-
-        echo "<pre>";
-        var_dump($productsWithTags);
-        echo "</pre>";
-
-        return new ProductsCollection;
     }
 
 }

@@ -53,7 +53,8 @@ $router->post('/searchByCategory', function () use ($twig, $productsController) 
 });
 
 $router->post('/searchByTags', function () use ($twig, $productsController) {
-    echo $twig->render('user.html.twig', ['products' => $productsController->searchByTags()]);
+    echo $twig->render('user.html.twig', ['products' => $productsController->searchByTags()->getProducts(),
+        'tags' => $productsController->getProductTags()->getTags()]);
 });
 
 

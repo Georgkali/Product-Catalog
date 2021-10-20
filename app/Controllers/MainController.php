@@ -15,7 +15,7 @@ class MainController
         $this->validationRepository = new ValidationRepository();
     }
 
-    public function login()
+    public function login(): void
     {
         if ($this->validationRepository->loginValidate($_POST['name'], $_POST['password'])) {
             $_SESSION['name'] = $_POST['name'];
