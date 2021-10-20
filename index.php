@@ -36,7 +36,7 @@ $router->get('/registration', function () use ($twig) {
     echo $twig->render('registration.html.twig');
 });
 
-$router->post('/register', 'UsersController@register');
+$router->post('/registration', 'UsersController@register');
 
 $router->post('/addProduct', 'ProductsController@addProduct');
 

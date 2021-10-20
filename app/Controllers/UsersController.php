@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Repositories\ValidationRepository;
+use App\Validation\RegistrationFormValidator;
 use Ramsey\Uuid\Uuid;
 use App\Models\User;
 use App\Repositories\UsersRepository;
@@ -21,21 +22,23 @@ class UsersController
 
     public function register()
     {
-        if (!empty($_POST['name']) && !empty($_POST['email']) && $_POST['password'] === $_POST['repeat_password']) {
+        if (!empty($_POST)) {
+            $validation = new RegistrationFormValidator($_POST);
+            $errors = $validation->validateLogin();
+            echo implode(' ', $errors);
+            if (empty($errors)) {
 
-            if ($this->validationRepository->validate($_POST['name'], $_POST['email'])) {
-
-                $user = new User(
-                    Uuid::uuid4(),
-                    $_POST['name'],
-                    $_POST['email'],
-                    password_hash($_POST['password'], PASSWORD_BCRYPT)
-                );
-                $this->usersRepository->addUser($user);
-
-            } else {
-                echo "User with this name/email already exist";
+                if ($this->validationRepository->validate($_POST['name'], $_POST['email'])) {
+                    $user = new User(
+                        Uuid::uuid4(),
+                        $_POST['name'],
+                        $_POST['email'],
+                        password_hash($_POST['password'], PASSWORD_BCRYPT)
+                    );
+                    $this->usersRepository->addUser($user);
+                }
             }
+
         }
     }
 
