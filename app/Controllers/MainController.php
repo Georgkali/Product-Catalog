@@ -25,7 +25,6 @@ class MainController
         }
     }
 
-
     public function logout()
     {
         unset($_SESSION['name']);

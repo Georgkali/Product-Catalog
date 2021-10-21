@@ -37,6 +37,10 @@ class UsersController
                     );
                     $this->usersRepository->addUser($user);
                 }
+            } else {
+                foreach ($errors as $key=>$value) {
+                    echo "$key $value";
+                }
             }
 
         }

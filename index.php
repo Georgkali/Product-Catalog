@@ -9,6 +9,7 @@ use Bramus\Router\Router;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Middlewares\ProductDataMiddleware;
+use App\Validation\RegistrationFormValidator;
 
 
 //header('Cache-Control: no cache');
@@ -16,7 +17,7 @@ use App\Middlewares\ProductDataMiddleware;
 session_start();
 
 $productsController = new ProductsController();
-//$productDataMiddleware = new ProductDataMiddleware();
+
 
 $loader = new FilesystemLoader('app/Views/');
 $twig = new Environment($loader, []);
@@ -38,20 +39,27 @@ $router->get('/registration', function () use ($twig) {
     echo $twig->render('registration.html.twig');
 });
 
-$router->post('/registration', 'UsersController@register');
+$router->before('POST', '/registration', function () use ($twig) {
+    $registrationFormValidator = new RegistrationFormValidator($_POST);
+    $errors = $registrationFormValidator->validateLogin();
+    if(!empty($errors)) {
+        echo $twig->render('registration.html.twig', ['errors' => $errors]);
+    }
+});
 
+$router->post('/registration', 'UsersController@register');
 
 
 $router->before('POST', '/addProduct', function () {
     $productDataMiddleware = new ProductDataMiddleware($_POST);
     $_POST = $productDataMiddleware->productDataMiddleware();
-} );
+});
 
 $router->post('/addProduct', 'ProductsController@addProduct');
 
 
 $router->get('/{id}', function ($id = '{id}') use ($twig, $productsController) {
-    echo $twig->render('product.html.twig', [ 'products' => $productsController->getProductById($id)]);
+    echo $twig->render('product.html.twig', ['products' => $productsController->getProductById($id)]);
 });
 
 $router->post('/delete', 'ProductsController@delete');
