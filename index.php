@@ -8,6 +8,7 @@ use App\Controllers\ProductsController;
 use Bramus\Router\Router;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use App\Middlewares\ProductDataMiddleware;
 
 
 //header('Cache-Control: no cache');
@@ -15,6 +16,7 @@ use Twig\Loader\FilesystemLoader;
 session_start();
 
 $productsController = new ProductsController();
+//$productDataMiddleware = new ProductDataMiddleware();
 
 $loader = new FilesystemLoader('app/Views/');
 $twig = new Environment($loader, []);
@@ -37,6 +39,13 @@ $router->get('/registration', function () use ($twig) {
 });
 
 $router->post('/registration', 'UsersController@register');
+
+
+
+$router->before('POST', '/addProduct', function () {
+    $productDataMiddleware = new ProductDataMiddleware($_POST);
+    $_POST = $productDataMiddleware->productDataMiddleware();
+} );
 
 $router->post('/addProduct', 'ProductsController@addProduct');
 

@@ -8,9 +8,9 @@ class RegistrationFormValidator
     private array $errors = [];
     private static array $fields = ['name', 'email', 'password', 'repeat_password'];
 
-    public function __construct($post)
+    public function __construct($data)
     {
-        $this->data = $post;
+        $this->data = $data;
     }
 
     public function validateLogin()
