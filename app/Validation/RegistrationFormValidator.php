@@ -6,21 +6,14 @@ class RegistrationFormValidator
 {
     public array $data;
     private array $errors = [];
-    private static array $fields = ['name', 'email', 'password', 'repeat_password'];
 
     public function __construct($data)
     {
         $this->data = $data;
     }
 
-    public function validateLogin()
+    public function validateLogin(): array
     {
-        foreach (self::$fields as $field) {
-            if (!array_key_exists($field, $this->data)) {
-                trigger_error("$field doesnt set");
-                return;
-            }
-        }
         $this->validateName();
         $this->validateEmail();
         $this->validatePassword();
@@ -47,10 +40,12 @@ class RegistrationFormValidator
             $this->addError('email', 'must be a valid email');
         }
     }
-    private function validatePassword() {
+
+    private function validatePassword()
+    {
         $password = $this->data['password'];
         $repeat_password = $this->data['repeat_password'];
-        if($password !== $repeat_password) {
+        if ($password !== $repeat_password) {
             $this->addError('password', 'password and password repeating doesnt match');
         }
     }

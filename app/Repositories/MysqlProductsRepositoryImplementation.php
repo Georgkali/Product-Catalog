@@ -2,25 +2,27 @@
 
 namespace App\Repositories;
 
+use App\Auth;
 use App\Models\Product;
 use App\Models\ProductsCollection;
 use App\Models\Tag;
 use App\Models\TagsCollection;
 use Carbon\Carbon;
+use App\Models\Database;
 use PDO;
 
-class ProductsRepository extends MysqlRepository
+class MysqlProductsRepositoryImplementation extends Database implements ProductsRepositoryInterface
 {
 
-    public function addTag(string $product_id, Tag $tag)
+    public function addTag(string $productId, Tag $tag)
     {
         $sql = "INSERT INTO productidtagid(product_id, tag_id) VALUES (?,?)";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute([$product_id, $tag->getTagid()]);
+        $statement->execute([$productId, $tag->getTagid()]);
 
     }
 
-    public function addProduct(Product $product)
+    public function addProduct(Product $product): void
     {
         $sql = "INSERT INTO products(id, product_name, qty, user_id, category, add_date, last_edit_date) VALUES (?,?,?,?,?,?,?)";
         $statement = $this->pdo->prepare($sql);
@@ -33,7 +35,7 @@ class ProductsRepository extends MysqlRepository
             $product->getLastEditDate()]);
     }
 
-    public function getProductsById($id): ProductsCollection
+    public function getProductsById(string $id): ProductsCollection
     {
         $db = $this->pdo->query("SELECT * FROM products WHERE user_id = '$id'");
         $db->execute();
@@ -60,19 +62,20 @@ class ProductsRepository extends MysqlRepository
 
     }
 
-    public function edit(string $id)
+    public function edit(array $data): void
     {
         $now = Carbon::now();
-        $sql = "UPDATE products SET product_name='{$_POST['newProductName']}',
-                                    category = '{$_POST['newCategory']}',
-                                    qty = '{$_POST['newQty']}',
-                                    last_edit_date = '$now' WHERE id='$id'";
+        $sql = "UPDATE products SET product_name='{$data['productName']}',
+                                    category = '{$data['category']}',
+                                    qty = '{$data['qty']}',
+                                    last_edit_date = '$now' WHERE id='{$data['id']}'";
         $this->pdo->exec($sql);
+
     }
 
     public function searchByCategory(string $category): ProductsCollection
     {
-        $id = (new UsersRepository())->getUserId($_SESSION['name']);
+        $id = (new MsqlUsersRepositoryImplementation())->getUserId(Auth::name());
         $products = $this->getProductsById($id)->getProducts();
         $collection = new ProductsCollection();
         foreach ($products as $product) {

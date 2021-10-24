@@ -10,21 +10,28 @@
 
 <body>
 <h1>Register Page</h1>
-
 <form method="post" action="/registration">
     <label for="name"> Name
         <input type="text" name="name" required>
     </label>
+
+    <p style="color: red">  {{ errors.name }}  </p>
+
     <br><br>
 
     <label> e-mail
         <input type="text" name="email" required>
     </label>
+    <p style="color: red">  {{ errors.email }} </p>
+
     <br><br>
 
     <label> Password
         <input type="password" name="password" required>
     </label>
+
+    <p style="color: red"> {{ errors.password }}</p>
+
     <br><br>
 
     <label> Repeat password
@@ -32,7 +39,7 @@
     </label>
     <button type="submit">Register</button>
 </form>
-
+<p style="color: red">{{ middleware.0 }}</p>
 
 </body>
 </html>

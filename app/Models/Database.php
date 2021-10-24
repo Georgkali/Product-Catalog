@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Models;
 
 use PDO;
 use PDOException;
 
 
-class MysqlRepository
+class Database
 {
     protected PDO $pdo;
 

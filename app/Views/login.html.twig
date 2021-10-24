@@ -9,19 +9,16 @@
 </head>
 <body>
 <h1>Login/<a href="/registration">Register</a></h1>
-
-<form method="post" action="/login">
-    <label for="name"> Name </label>
-    <input type="text" name="name" required>
-
-    <br><br>
-    <label> Password </label>
-    <input type="password" name="password" required>
-    <br><br>
-
-    <button type="submit">Login</button>
-</form>
-
-
+    <form method="post" action="/login">
+        <label for="name"> Name </label>
+        <input type="text" name="name" required>
+        <p style="color: red">{{ errors.0.username }}  </p>
+        <br><br>
+        <label> Password </label>
+        <input type="password" name="password" required>
+        <p style="color: red">{{ errors.0.password }}  </p>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>

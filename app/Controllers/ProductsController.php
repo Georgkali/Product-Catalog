@@ -7,26 +7,24 @@ use App\Models\ProductCategories;
 use App\Models\ProductsCollection;
 use App\Models\Tag;
 use App\Models\TagsCollection;
-use App\Repositories\ProductsRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\MysqlProductsRepositoryImplementation;
+use App\Repositories\ProductsRepositoryInterface;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
 class ProductsController
 {
 
-    private ProductsRepository $productsRepository;
-    private UsersRepository $usersRepository;
+    private ProductsRepositoryInterface $productsRepository;
 
     public function __construct()
     {
-        $this->productsRepository = new ProductsRepository();
-        $this->usersRepository = new UsersRepository();
+        $this->productsRepository = new MysqlProductsRepositoryImplementation();
     }
 
     public function get(): ProductsCollection
     {
-        return $this->productsRepository->getProductsById($this->usersRepository->getUserId($_SESSION['name']));
+        return $this->productsRepository->getProductsById($_SESSION['authId']);
     }
 
     public function addProduct()
@@ -38,7 +36,7 @@ class ProductsController
                     $id,
                     $_POST['productName'],
                     $_POST['qty'],
-                    $this->usersRepository->getUserId($_SESSION['name']),
+                    $_SESSION['authId'],
                     $_POST['category'],
                     Carbon::now(),
                 ));
@@ -49,11 +47,10 @@ class ProductsController
                 }
             }
 
-            header('location: /main');
         } else {
             echo 'invalid category';
-            header('location: /main');
         }
+        header('location: /main');
     }
 
     public function getProductById(string $id): ProductsCollection
@@ -76,7 +73,7 @@ class ProductsController
 
     public function edit(): void
     {
-        $this->productsRepository->edit($_POST['id']);
+        $this->productsRepository->edit($_POST);
         header("location: /main");
     }
 

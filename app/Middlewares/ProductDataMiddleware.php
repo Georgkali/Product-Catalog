@@ -6,14 +6,11 @@ class ProductDataMiddleware
 {
     private array $data;
     private array $modData;
-    private array $fields = ['productName', 'qty', 'category'];
 
     public function __construct(array $data)
     {
         $this->data = $data;
     }
-
-
 
     public function NameMod()
     {
@@ -21,17 +18,29 @@ class ProductDataMiddleware
         $productName = trim(strtolower($productName));
         $this->addToModData('productName', $productName);
     }
-    public function qtyMod() {
+
+    public function qtyMod()
+    {
         $qty = $this->data['qty'];
         $qty = abs($qty);
         $this->addToModData('qty', $qty);
     }
-    public function categoryMod() {
+
+    public function categoryMod()
+    {
         $category = $this->data['category'];
-        if(!in_array($category, ['a', 'b', 'c',])) {
+        if (!in_array($category, ['a', 'b', 'c',])) {
             $category = '-';
         }
         $this->addToModData('category', $category);
+    }
+
+    public function id()
+    {
+        if (isset($this->data['id'])) {
+            $id = $this->data['id'];
+            $this->addToModData('id', $id);
+        }
     }
 
     private function addToModData(string $key, $value)
@@ -39,11 +48,12 @@ class ProductDataMiddleware
         $this->modData[$key] = $value;
     }
 
-    public function productDataMiddleware(): array {
+    public function productDataMiddleware(): array
+    {
         $this->NameMod();
         $this->qtyMod();
         $this->categoryMod();
-        var_dump('iwasher');
+        $this->id();
         return $this->modData;
     }
 

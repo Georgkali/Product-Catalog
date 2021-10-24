@@ -19,7 +19,7 @@
 <form method="post" action="/addProduct">
 
     <label for="name">Product name</label>
-    <input type="text" name="productName" required>
+    <input type="text" name="productName">
     <label for="name">Quantity</label>
     <input type="number" name="qty" required>
     <label for="name">Category</label>
@@ -39,6 +39,9 @@
 
     <button type="submit">Add product</button>
 </form>
+{% for error in addErrors %}
+    <p style="color: red"> {{ error }}</p>
+{% endfor %}
 <br>
 <table style="border-width: 1px; border-color: black; border-style: solid">
     <tr>

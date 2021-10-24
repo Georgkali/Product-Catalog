@@ -2,13 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Models\Database;
 use App\Models\User;
 use PDO;
 
-class UsersRepository extends MysqlRepository
+class MsqlUsersRepositoryImplementation extends Database implements UsersRepositoryInterface
 {
 
-    public function addUser(User $user)
+    public function addUser(User $user): void
     {
         $sql = "INSERT INTO users(id, name, email, password) VALUES (?,?,?,?)";
         $statement = $this->pdo->prepare($sql);
@@ -31,5 +32,19 @@ class UsersRepository extends MysqlRepository
     {
         $users = $this->getRow(['name', 'id']);
         return $users[1][array_search($name, $users[0])];
+    }
+
+    public function getById(string $id): User
+    {
+        $db = $this->pdo->query("SELECT * FROM users WHERE id = '$id'");
+        $db->execute();
+        $user = $db->fetch(PDO::FETCH_ASSOC);
+        return new User(
+            $user['id'],
+            $user['name'],
+            $user['email'],
+            $user['password']
+        );
+
     }
 }

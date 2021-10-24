@@ -2,34 +2,20 @@
 
 namespace App\Controllers;
 
-
-use App\Repositories\ValidationRepository;
-
+use App\Repositories\MsqlUsersRepositoryImplementation;
 
 class MainController
 {
-    private ValidationRepository $validationRepository;
-
-    public function __construct()
-    {
-        $this->validationRepository = new ValidationRepository();
-    }
 
     public function login(): void
     {
-        if ($this->validationRepository->loginValidate($_POST['name'], $_POST['password'])) {
-            $_SESSION['name'] = $_POST['name'];
-            header('location: /main');
-        } else {
-            echo 'invalid username/password';
-        }
+        $_SESSION['authId'] = (new MsqlUsersRepositoryImplementation())->getUserId($_POST['name']);
+        header('location: /main');
     }
 
     public function logout()
     {
-        unset($_SESSION['name']);
+        unset($_SESSION['authId']);
         header('location: /');
     }
-
-
 }
