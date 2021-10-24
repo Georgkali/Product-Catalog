@@ -16,7 +16,8 @@ class Database
             $config = require 'config.php';
             $this->pdo = new PDO("{$config['connection']};dbname=$config[name]", "$config[username]", "$config[password]");
         } catch (PDOException $e) {
-            die('Could not connect to database.');
+            $_SESSION['_errors'] = $e->getMessage();
+            exit('Could not connect to database.');
         }
     }
 

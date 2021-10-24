@@ -75,7 +75,7 @@ class MysqlProductsRepositoryImplementation extends Database implements Products
 
     public function searchByCategory(string $category): ProductsCollection
     {
-        $id = (new MsqlUsersRepositoryImplementation())->getUserId(Auth::name());
+        $id = (new MysqlUsersRepositoryImplementation())->getUserId(Auth::name());
         $products = $this->getProductsById($id)->getProducts();
         $collection = new ProductsCollection();
         foreach ($products as $product) {

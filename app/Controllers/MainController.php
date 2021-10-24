@@ -2,14 +2,20 @@
 
 namespace App\Controllers;
 
-use App\Repositories\MsqlUsersRepositoryImplementation;
+use App\Container;
+
 
 class MainController
 {
+    private Container $container;
+    public function __construct()
+    {
+    $this->container = new Container();
+    }
 
     public function login(): void
     {
-        $_SESSION['authId'] = (new MsqlUsersRepositoryImplementation())->getUserId($_POST['name']);
+        $_SESSION['authId'] = $this->container->get('usersRepository')->getUserId($_POST['name']);
         header('location: /main');
     }
 

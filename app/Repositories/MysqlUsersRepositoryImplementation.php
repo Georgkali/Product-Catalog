@@ -6,7 +6,7 @@ use App\Models\Database;
 use App\Models\User;
 use PDO;
 
-class MsqlUsersRepositoryImplementation extends Database implements UsersRepositoryInterface
+class MysqlUsersRepositoryImplementation extends Database implements UsersRepositoryInterface
 {
 
     public function addUser(User $user): void

@@ -7,12 +7,13 @@ use App\Controllers\ProductsController;
 use App\Validation\LoginFormValidator;
 use App\Validation\ProductFormValidator;
 use Bramus\Router\Router;
+use DI\Container;
+use DI\ContainerBuilder;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Middlewares\ProductDataMiddleware;
 use App\Validation\RegistrationFormValidator;
 use App\Middlewares\UserRegistrationMiddleware;
-
 
 //header('Cache-Control: no cache');
 //session_cache_limiter('private_no_expire');
@@ -126,5 +127,6 @@ $router->post('/searchByTags', function () use ($twig, $productsController) {
 $router->post('/logout', 'MainController@logout');
 
 $router->run();
+
 
 unset($_SESSION['_errors']);

@@ -3,8 +3,7 @@
 namespace App\Validation;
 
 
-use App\Exceptions\LoginFormValidationException;
-use App\Repositories\MsqlUsersRepositoryImplementation;
+use App\Repositories\MysqlUsersRepositoryImplementation;
 
 class LoginFormValidator
 {
@@ -12,7 +11,7 @@ class LoginFormValidator
 
     public function validate(string $userName, string $password): void
     {
-        $db = new MsqlUsersRepositoryImplementation();
+        $db = new MysqlUsersRepositoryImplementation();
         $values = $db->getRow(['name', 'password']);
         if (!in_array($userName, $values[0])) {
             $this->errors['username'] = 'Invalid username';

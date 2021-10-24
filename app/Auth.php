@@ -2,14 +2,14 @@
 
 namespace App;
 
-use App\Repositories\MsqlUsersRepositoryImplementation;
+use App\Repositories\MysqlUsersRepositoryImplementation;
 
 class Auth
 {
     public static function name()
     {
         if (!empty($_SESSION['authId'])) {
-            return (new MsqlUsersRepositoryImplementation())->getById($_SESSION['authId'])->getName();
+            return (new MysqlUsersRepositoryImplementation())->getById($_SESSION['authId'])->getName();
         }
     }
 }

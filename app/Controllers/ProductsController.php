@@ -7,31 +7,31 @@ use App\Models\ProductCategories;
 use App\Models\ProductsCollection;
 use App\Models\Tag;
 use App\Models\TagsCollection;
-use App\Repositories\MysqlProductsRepositoryImplementation;
-use App\Repositories\ProductsRepositoryInterface;
+use App\Container;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
 class ProductsController
 {
 
-    private ProductsRepositoryInterface $productsRepository;
+    private Container $container;
 
     public function __construct()
     {
-        $this->productsRepository = new MysqlProductsRepositoryImplementation();
+        $this->container = new Container();
     }
 
     public function get(): ProductsCollection
     {
-        return $this->productsRepository->getProductsById($_SESSION['authId']);
+        return $this->container->get('productsRepository')->getProductsById($_SESSION['authId']);
     }
 
     public function addProduct()
     {
         $id = Uuid::uuid4();
+
         if (in_array($_POST['category'], (new ProductCategories())->getCategories()) && !empty($_POST['productName'])) {
-            $this->productsRepository->addProduct(
+            $this->container->get('productsRepository')->addProduct(
                 new Product(
                     $id,
                     $_POST['productName'],
@@ -43,7 +43,7 @@ class ProductsController
 
             foreach ($_POST['tags'] as $tag) {
                 if (isset($tag)) {
-                    $this->productsRepository->addTag($id, new Tag($tag));
+                    $this->container->get('productsRepository')->addTag($id, new Tag($tag));
                 }
             }
 
@@ -55,7 +55,7 @@ class ProductsController
 
     public function getProductById(string $id): ProductsCollection
     {
-        $collection = new ProductsCollection();
+        $collection = $this->container->get('productCollection');
         $products = $this->get()->getProducts();
         foreach ($products as $product) {
             if ($product->getId() == $id) {
@@ -67,30 +67,30 @@ class ProductsController
 
     public function delete(): void
     {
-        $this->productsRepository->delete($_POST['id']);
+        $this->container->get('productsRepository')->delete($_POST['id']);
         header("location: /main");
     }
 
     public function edit(): void
     {
-        $this->productsRepository->edit($_POST);
+        $this->container->get('productsRepository')->edit($_POST);
         header("location: /main");
     }
 
     public function searchByCategory(): ProductsCollection
     {
-        return $this->productsRepository->searchByCategory($_POST['category']);
+        return $this->container->get('productsRepository')->searchByCategory($_POST['category']);
     }
 
     public function getProductTags(): TagsCollection
     {
 
-        return $this->productsRepository->getTags();
+        return $this->container->get('productsRepository')->getTags();
     }
 
     public function searchByTags(): ProductsCollection
     {
-        $allTags = $this->productsRepository->getTags()->getTags();
+        $allTags = $this->container->get('productsRepository')->getTags()->getTags();
         $productsWithTags = [];
 
         foreach ($_POST['tags'] as $tag) {
@@ -101,7 +101,7 @@ class ProductsController
                 }
             }
         }
-        $collection = new ProductsCollection();
+        $collection = $this->container->get('productCollection');
         foreach ($productsWithTags as $productID => $tags) {
             if (count($tags) == count($_POST['tags'])) {
                 $products = $this->get()->getProducts();

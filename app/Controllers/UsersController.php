@@ -2,19 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Repositories\UsersRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 use App\Models\User;
-use App\Repositories\MsqlUsersRepositoryImplementation;
-
+use App\Container;
 
 class UsersController
 {
-    private UsersRepositoryInterface $usersRepository;
+    private Container $container;
 
     public function __construct()
     {
-        $this->usersRepository = new MsqlUsersRepositoryImplementation();
+        $this->container = new Container();
     }
 
     public function register()
@@ -25,7 +23,7 @@ class UsersController
             $_POST['email'],
             password_hash($_POST['password'], PASSWORD_BCRYPT)
         );
-        $this->usersRepository->addUser($user);
+        $this->container->get('usersRepository')->addUser($user);
         header('location: /');
     }
 

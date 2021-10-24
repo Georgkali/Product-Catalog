@@ -2,7 +2,7 @@
 
 namespace App\Middlewares;
 
-use App\Repositories\MsqlUsersRepositoryImplementation;
+use App\Repositories\MysqlUsersRepositoryImplementation;
 use App\Repositories\UsersRepositoryInterface;
 
 class UserRegistrationMiddleware
@@ -13,7 +13,7 @@ class UserRegistrationMiddleware
 
     public function __construct(array $data)
     {
-        $this->usersRepository = new MsqlUsersRepositoryImplementation();
+        $this->usersRepository = new MysqlUsersRepositoryImplementation();
         $this->data = $data;
       //  echo "<pre>";
        // var_dump($data, $this->usersRepository->getRow(['name', 'email']));
