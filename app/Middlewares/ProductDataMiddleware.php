@@ -5,7 +5,7 @@ namespace App\Middlewares;
 class ProductDataMiddleware
 {
     private array $data;
-    private array $modData;
+    private array $modData = [];
 
     public function __construct(array $data)
     {
@@ -43,10 +43,20 @@ class ProductDataMiddleware
         }
     }
 
+    private function tags()
+    {
+
+        $tags = $this->data['tags'];
+
+            $this->addToModData('tags', $tags);
+
+    }
+
     private function addToModData(string $key, $value)
     {
         $this->modData[$key] = $value;
     }
+
 
     public function productDataMiddleware(): array
     {
@@ -54,6 +64,7 @@ class ProductDataMiddleware
         $this->qtyMod();
         $this->categoryMod();
         $this->id();
+        $this->tags();
         return $this->modData;
     }
 

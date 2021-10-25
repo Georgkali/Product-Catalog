@@ -11,6 +11,7 @@ use App\Container;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
+
 class ProductsController
 {
 
@@ -28,8 +29,8 @@ class ProductsController
 
     public function addProduct()
     {
-        $id = Uuid::uuid4();
 
+        $id = Uuid::uuid4();
         if (in_array($_POST['category'], (new ProductCategories())->getCategories()) && !empty($_POST['productName'])) {
             $this->container->get('productsRepository')->addProduct(
                 new Product(
@@ -46,11 +47,10 @@ class ProductsController
                     $this->container->get('productsRepository')->addTag($id, new Tag($tag));
                 }
             }
-
         } else {
             echo 'invalid category';
         }
-        header('location: /main');
+       header('location: /main');
     }
 
     public function getProductById(string $id): ProductsCollection
