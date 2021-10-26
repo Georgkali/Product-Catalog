@@ -45,11 +45,8 @@ class ProductDataMiddleware
 
     private function tags()
     {
-
         $tags = $this->data['tags'];
-
-            $this->addToModData('tags', $tags);
-
+        $this->addToModData('tags', $tags);
     }
 
     private function addToModData(string $key, $value)

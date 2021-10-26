@@ -2,28 +2,22 @@
 
 namespace App\Controllers;
 
-use Ramsey\Uuid\Uuid;
-use App\Models\User;
-use App\Container;
+use App\Services\UsersControllerService;
+
 
 class UsersController
 {
-    private Container $container;
+    private UsersControllerService $usersControllerService;
 
     public function __construct()
     {
-        $this->container = new Container();
+        $this->usersControllerService = new UsersControllerService();
     }
 
     public function register()
     {
-        $user = new User(
-            Uuid::uuid4(),
-            $_POST['name'],
-            $_POST['email'],
-            password_hash($_POST['password'], PASSWORD_BCRYPT)
-        );
-        $this->container->get('usersRepository')->addUser($user);
+        $data = $_POST;
+        $this->usersControllerService->register($data);
         header('location: /');
     }
 

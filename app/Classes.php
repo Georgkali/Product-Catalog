@@ -1,13 +1,12 @@
 <?php
 
 namespace App;
-use App\Models\Product;
 use App\Models\ProductsCollection;
 use App\Repositories\MysqlProductsRepositoryImplementation;
 use App\Repositories\MysqlUsersRepositoryImplementation;
-use Carbon\Carbon;
+use App\Repositories\ProductsRepositoryInterface;
+use App\Repositories\UsersRepositoryInterface;
 use DI;
-use Ramsey\Uuid\Uuid;
 
 return [
     'productsRepository' => DI\factory(function () {
@@ -19,14 +18,6 @@ return [
     'productCollection' => DI\factory(function () {
         return new ProductsCollection();
     }),
-    'product' => DI\factory(function () {
-        $id = Uuid::uuid4();
-        return new Product($id,
-            $_POST['productName'],
-            $_POST['qty'],
-            $_SESSION['authId'],
-            $_POST['category'],
-            Carbon::now());
-    })
-
+    UsersRepositoryInterface::class => DI\create(MysqlUsersRepositoryImplementation::class),
+    ProductsRepositoryInterface::class => DI\create(MysqlProductsRepositoryImplementation::class)
 ];
